@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.percimal.singaporeairlines">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,9 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddFlights"></activity>
+        <activity android:name=".AddFlightsActivity" />
+        <activity
+            android:name=".FlightDetailActivity"
+            android:label="@string/title_activity_flight_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

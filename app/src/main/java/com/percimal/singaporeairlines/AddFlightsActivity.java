@@ -2,12 +2,10 @@ package com.percimal.singaporeairlines;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -18,7 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 
-public class AddFlights extends Activity {
+public class AddFlightsActivity extends Activity {
 
     AmadeusService amadeusService;
 
