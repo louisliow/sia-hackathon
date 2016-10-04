@@ -3,6 +3,10 @@
     <string name="action_settings">Settings</string>
 
     <string name="amadeus_api_key">lwezd2oIvAXziJvwtHGGTEc8wS7IUQs9</string>
+    <string name="uber_client_id">C8lBvkHSNLAZfghKXdB5C-T_vmmBC_Yj</string>
+    <string name="uber_client_secret">xJhLgGPuMTxQ3bG6r-D_Lv3dHtmYNJW7H8jY91Wl</string>
+    <string name="uber_server_token">t8MCojqYOZPSDDmOxc3o_M19dk8nn2Sn1W1hMUAv</string>
+
     <string name="title_activity_flight_detail">Flight</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
