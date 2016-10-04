@@ -2,8 +2,12 @@ package com.percimal.singaporeairlines;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import com.percimal.singaporeairlines.data.Flight;
+import com.percimal.singaporeairlines.data.FlightDao;
 
 import java.io.IOException;
 
@@ -19,11 +23,16 @@ import retrofit2.Retrofit;
 public class AddFlightsActivity extends Activity {
 
     AmadeusService amadeusService;
+    private FlightDao flightDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_flights);
+
+        flightDao = PercimalApplication.getInstance()
+                .getDaoSession()
+                .getFlightDao();
 
         OkHttpClient client = new OkHttpClient.Builder()
             .addInterceptor(new Interceptor() {
@@ -61,6 +70,7 @@ public class AddFlightsActivity extends Activity {
         if (hasError) {
             return;
         }
+
         // TODO: Show loading indicator.
         Call<TravelRecord> call = amadeusService.getTravelRecord(pnr, lastName);
         call.enqueue(new Callback<TravelRecord>() {
@@ -70,6 +80,7 @@ public class AddFlightsActivity extends Activity {
                     TravelRecord travelRecord = response.body();
                     for (Flight flight : travelRecord.flights) {
                         // TODO: Persist flights to SQLite.
+                        flightDao.insert(flight);
                     }
                 } else {
                     // TODO: Display error message for no record found.

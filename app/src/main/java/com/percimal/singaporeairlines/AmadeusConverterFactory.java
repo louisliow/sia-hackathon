@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.percimal.singaporeairlines.data.Flight;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -42,22 +43,22 @@ public class AmadeusConverterFactory extends Converter.Factory {
                                 JsonObject flight = flightEl.getAsJsonObject();
                                 Flight f = new Flight();
                                 try {
-                                    f.departure = dateFormat.parse(flight.get("departs_at").getAsString());
-                                    f.arrival = dateFormat.parse(flight.get("arrives_at").getAsString());
+                                    f.setDeparture(dateFormat.parse(flight.get("departs_at").getAsString()));
+                                    f.setArrival(dateFormat.parse(flight.get("arrives_at").getAsString()));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
-                                f.originAirport = flight.get("origin").getAsJsonObject().get("airport").getAsString();
-                                f.originTerminal = flight.get("origin").getAsJsonObject().get("terminal").getAsString();
-                                f.destinationAirport = flight.get("destination").getAsJsonObject().get("airport").getAsString();
-                                f.destinationTerminal = flight.get("destination").getAsJsonObject().get("terminal").getAsString();
-                                f.flightNumber = flight.get("flight_number").getAsString();
-                                f.marketingAirline = flight.get("marketing_airline").getAsString();
-                                f.operatingAirline = flight.get("operating_airline").getAsString();
-                                f.bookingCode = flight.get("booking_info").getAsJsonObject().get("booking_code").getAsString();
-                                f.travelClass = flight.get("booking_info").getAsJsonObject().get("travel_class").getAsString();
-                                f.bookingStatus = flight.get("booking_info").getAsJsonObject().get("status").getAsString();
-                                f.pnr = flight.get("booking_info").getAsJsonObject().get("airline_record_locator").getAsString();
+                                f.setOriginAirport(flight.get("origin").getAsJsonObject().get("airport").getAsString());
+                                f.setOriginTerminal(flight.get("origin").getAsJsonObject().get("terminal").getAsString());
+                                f.setDestinationAirport(flight.get("destination").getAsJsonObject().get("airport").getAsString());
+                                f.setDestinationTerminal(flight.get("destination").getAsJsonObject().get("terminal").getAsString());
+                                f.setFlightNumber(flight.get("flight_number").getAsString());
+                                f.setMarketingAirline(flight.get("marketing_airline").getAsString());
+                                f.setOperatingAirline(flight.get("operating_airline").getAsString());
+                                f.setBookingCode(flight.get("booking_info").getAsJsonObject().get("booking_code").getAsString());
+                                f.setTravelClass(flight.get("booking_info").getAsJsonObject().get("travel_class").getAsString());
+                                f.setBookingStatus(flight.get("booking_info").getAsJsonObject().get("status").getAsString());
+                                f.setPnr(flight.get("booking_info").getAsJsonObject().get("airline_record_locator").getAsString());
                                 travelRecord.flights.add(f);
                             }
                         }

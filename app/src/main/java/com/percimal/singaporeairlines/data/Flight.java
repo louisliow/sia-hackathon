@@ -4,13 +4,15 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.util.Date;
+
 /**
  * Created by Peter on 5/10/2016.
  */
 
 @Entity
 public class Flight {
-    @Id
+    @Id(autoincrement = true)
     private long id;
 
     private String originAirport;
@@ -25,12 +27,15 @@ public class Flight {
     private String bookingStatus;
     private String pnr;
 
-    @Generated(hash = 1730761550)
+    private Date departure;
+    private Date arrival;
+
+    @Generated(hash = 1608369803)
     public Flight(long id, String originAirport, String originTerminal,
             String destinationAirport, String destinationTerminal,
             String flightNumber, String marketingAirline, String operatingAirline,
             String bookingCode, String travelClass, String bookingStatus,
-            String pnr) {
+            String pnr, Date departure, Date arrival) {
         this.id = id;
         this.originAirport = originAirport;
         this.originTerminal = originTerminal;
@@ -43,6 +48,8 @@ public class Flight {
         this.travelClass = travelClass;
         this.bookingStatus = bookingStatus;
         this.pnr = pnr;
+        this.departure = departure;
+        this.arrival = arrival;
     }
 
     @Generated(hash = 351578258)
@@ -143,5 +150,21 @@ public class Flight {
 
     public void setPnr(String pnr) {
         this.pnr = pnr;
+    }
+
+    public Date getDeparture() {
+        return this.departure;
+    }
+
+    public void setDeparture(Date departure) {
+        this.departure = departure;
+    }
+
+    public Date getArrival() {
+        return this.arrival;
+    }
+
+    public void setArrival(Date arrival) {
+        this.arrival = arrival;
     }
 }

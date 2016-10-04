@@ -1,5 +1,7 @@
 package com.percimal.singaporeairlines;
 
+import com.percimal.singaporeairlines.data.Flight;
+
 import java.util.List;
 
 public class TravelRecord {
