@@ -24,6 +24,10 @@
         <activity
             android:name=".FlightDetailActivity"
             android:label="@string/title_activity_flight_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UberRequestActivity"
+            android:label="@string/title_activity_uber_request"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -46,42 +46,58 @@ public class MainActivity extends AppCompatActivity {
         Flight f1 = new Flight();
         f1.originAirport = "SIN";
         f1.destinationAirport = "ICN";
+        f1.marketingAirline = "SQ";
+        f1.flightNumber = "16";
         flightList.add(f1);
         Flight f2 = new Flight();
         f2.originAirport = "ICN";
         f2.destinationAirport = "SFO";
+        f2.marketingAirline = "SQ";
+        f2.flightNumber = "15";
         flightList.add(f2);
         Flight f3 = new Flight();
         f3.originAirport = "SFO";
         f3.destinationAirport = "SIN";
+        f3.marketingAirline = "SQ";
+        f3.flightNumber = "14";
         flightList.add(f3);
         Flight f4 = new Flight();
         f4.originAirport = "SIN";
         f4.destinationAirport = "HKG";
+        f4.marketingAirline = "SQ";
+        f4.flightNumber = "8";
         flightList.add(f4);
         Flight f5 = new Flight();
         f5.originAirport = "HKG";
         f5.destinationAirport = "SIN";
+        f5.marketingAirline = "SQ";
+        f5.flightNumber = "2";
         flightList.add(f5);
         Flight f6 = new Flight();
         f6.originAirport = "SIN";
         f6.destinationAirport = "JFK";
+        f6.marketingAirline = "SQ";
+        f6.flightNumber = "1";
         flightList.add(f6);
         Flight f7 = new Flight();
         f7.originAirport = "JFK";
         f7.destinationAirport = "SIN";
+        f7.marketingAirline = "SQ";
+        f7.flightNumber = "27";
         flightList.add(f7);
         Flight f8 = new Flight();
         f8.originAirport = "SIN";
         f8.destinationAirport = "LHR";
+        f8.marketingAirline = "SQ";
+        f8.flightNumber = "28";
         flightList.add(f8);
 
         flightsAdapter = new FlightsAdapter(this, flightList);
-
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
+        int numCols = 1;
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, numCols);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, 15, true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(numCols, getResources().getDimensionPixelSize(R.dimen.card_spacing), true));
         recyclerView.setAdapter(flightsAdapter);
     }
 
@@ -114,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
         public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
             this.spanCount = spanCount;
-            this.spacing = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, spacing, getResources().getDisplayMetrics()));
+            this.spacing = spacing;
             this.includeEdge = includeEdge;
         }
 

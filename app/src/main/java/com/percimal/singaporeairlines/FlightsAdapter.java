@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -29,7 +30,10 @@ public class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Flight flight = flightList.get(position);
-        holder.title.setText("Flight from " + flight.originAirport + " to " + flight.destinationAirport);
+        holder.cardImage.setImageResource(mContext.getResources().getIdentifier(flight.destinationAirport.toLowerCase(), "drawable", mContext.getPackageName()));
+        holder.title.setText(AppData.getInstance().iataCodeToCity.get(flight.destinationAirport));
+        holder.flightRoute.setText(flight.originAirport + " - " + flight.destinationAirport);
+        holder.flightNumber.setText(flight.marketingAirline + " " + flight.flightNumber);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,10 +51,16 @@ public class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
+        public TextView flightRoute;
+        public TextView flightNumber;
+        public ImageView cardImage;
 
         public ViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
+            flightRoute = (TextView) view.findViewById(R.id.flight_route);
+            flightNumber = (TextView) view.findViewById(R.id.flight_number);
+            cardImage = (ImageView) view.findViewById(R.id.card_image);
         }
     }
 }
