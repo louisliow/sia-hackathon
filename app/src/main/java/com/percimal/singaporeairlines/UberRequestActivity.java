@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.uber.sdk.android.core.UberSdk;
 import com.uber.sdk.android.core.auth.AccessTokenManager;
@@ -17,11 +18,13 @@ import com.uber.sdk.rides.client.SessionConfiguration;
 
 import java.util.Arrays;
 
-public class UberRequestActivity extends AppCompatActivity implements UberRequestFragment.OnFragmentInteractionListener, UberAuthFragment.OnFragmentInteractionListener {
+public class UberRequestActivity extends AppCompatActivity implements UberRequestFragment.OnFragmentInteractionListener {
 
     AccessTokenManager accessTokenManager;
     LoginManager loginManager;
     Flight flight;
+    UberAuthFragment uberAuthFragment;
+    UberRequestFragment uberRequestFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +46,17 @@ public class UberRequestActivity extends AppCompatActivity implements UberReques
         LoginCallback loginCallback = new LoginCallback() {
             @Override
             public void onLoginCancel() {
-
+                uberAuthFragment.loginFailCallback();
             }
 
             @Override
             public void onLoginError(@NonNull AuthenticationError error) {
-
+                uberAuthFragment.loginFailCallback();
             }
 
             @Override
             public void onLoginSuccess(@NonNull AccessToken accessToken) {
-                UberRequestFragment uberRequestFragment = new UberRequestFragment();
+                uberRequestFragment = new UberRequestFragment();
                 uberRequestFragment.setArguments(getIntent().getExtras());
                 getFragmentManager().beginTransaction().replace(R.id.frame_layout, uberRequestFragment).commit();
             }
@@ -68,18 +71,17 @@ public class UberRequestActivity extends AppCompatActivity implements UberReques
         loginManager = new LoginManager(accessTokenManager, loginCallback);
 
         if(loginManager.isAuthenticated()) {
-            UberRequestFragment uberRequestFragment = new UberRequestFragment();
+            uberRequestFragment = new UberRequestFragment();
             uberRequestFragment.setArguments(getIntent().getExtras());
             getFragmentManager().beginTransaction().add(R.id.frame_layout, uberRequestFragment).commit();
         } else {
-            UberAuthFragment uberAuthFragment = new UberAuthFragment();
+            uberAuthFragment = new UberAuthFragment();
             getFragmentManager().beginTransaction().add(R.id.frame_layout, uberAuthFragment).commit();
         }
 
     }
 
-    @Override
-    public void authenticate() {
+    public void uberLogin(View view) {
         loginManager.login(this);
     }
 

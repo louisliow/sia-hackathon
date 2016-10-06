@@ -4,10 +4,15 @@
     android:layout_height="match_parent"
     tools:context="com.percimal.singaporeairlines.UberRequestFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <com.uber.sdk.android.rides.RideRequestView
+            android:id="@+id/ride_request_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </FrameLayout>

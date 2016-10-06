@@ -3,6 +3,7 @@
     package="com.percimal.singaporeairlines">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -10,6 +11,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA0y_843Dkq-5X8VO7pA4WhtpZaAP_zCeo"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -28,7 +32,7 @@
         <activity
             android:name=".UberRequestActivity"
             android:label="@string/title_activity_uber_request"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
