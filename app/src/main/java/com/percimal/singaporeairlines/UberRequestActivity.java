@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.uber.sdk.android.core.UberSdk;
@@ -27,6 +28,8 @@ import java.util.Arrays;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UberRequestActivity extends AppCompatActivity implements
         UberAuthFragment.OnFragmentInteractionListener,
@@ -41,6 +44,7 @@ public class UberRequestActivity extends AppCompatActivity implements
     UberRequestFragment uberRequestFragment;
     PorterRequestDialogFragment porterRequestDialog;
     RidesService ridesService;
+    PorterService porterService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,11 @@ public class UberRequestActivity extends AppCompatActivity implements
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_FINE_LOCATION);
         }
 
+        porterService = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.100:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(PorterService.class);
     }
 
     private void initializeActivity() {
@@ -171,7 +180,26 @@ public class UberRequestActivity extends AppCompatActivity implements
                 if (response.isSuccessful()) {
                     Ride ride = response.body();
                     // TODO: Send request to track `ride.getRideId()`.
-                    porterRequestDialog.requestCallback(true);
+                    porterService.createPortalRequest(new CreatePortalRequestBody(
+                            accessTokenManager.getAccessToken().getToken(),
+                            flight.flightNumber,
+                            flight.originAirport,
+                            flight.originTerminal,
+                            flight.travelClass)).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                porterRequestDialog.requestCallback(true);
+                            } else {
+                                porterRequestDialog.requestCallback(false);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            porterRequestDialog.requestCallback(false);
+                        }
+                    });
                 } else {
                     porterRequestDialog.requestCallback(false);
                 }
