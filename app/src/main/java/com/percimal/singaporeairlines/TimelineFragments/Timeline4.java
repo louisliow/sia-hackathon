@@ -35,12 +35,19 @@ public class Timeline4 extends Fragment {
                 gateText.setText("Gate " + gateNumber);
             else
                 gateText.setText("Gate information not yet available.");
+            String headerText = getArguments().getString("timeHeader");
+            TextView boardingHeader = (TextView) view.findViewById(R.id.timeLeft4);
+            boardingHeader.setText(headerText);
         } else {
             view = inflater.inflate(R.layout.timeline4_inactive, container, false);
+            int past = getArguments().getInt("past");
+            String headerText = getArguments().getString("timeHeader");
+            TextView boardingHeader = (TextView) view.findViewById(R.id.timeLeft4);
+            if (past > 0)
+                boardingHeader.setText("You have boarded the plane. Enjoy your flight!");
+            else
+                boardingHeader.setText(headerText);
         }
-        String headerText = getArguments().getString("timeHeader");
-        TextView boardingHeader = (TextView) view.findViewById(R.id.timeLeft4);
-        boardingHeader.setText(headerText);
 
         return view;
     }

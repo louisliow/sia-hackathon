@@ -84,7 +84,10 @@ public class TimelineActivity extends AppCompatActivity {
         Fragment fragment2 = new Timeline2();
         bundle = new Bundle();
         bundle.putString("timeHeader", "Reach airport by " + reachTime.toString(timeFormat));
+        bundle.putString("airport", airport);
+        bundle.putString("terminal", terminal);
         bundle.putInt("active", (step == 1) ? 1 : 0);
+        bundle.putInt("past", (step > 1) ? 1 : 0);
         fragment2.setArguments(bundle);
         if (firstDraw)
             fragmentTransaction.add(R.id.phase2Holder, fragment2);
@@ -99,6 +102,7 @@ public class TimelineActivity extends AppCompatActivity {
         bundle.putString("airport", airport);
         bundle.putString("terminal", terminal);
         bundle.putInt("active", (step == 2) ? 1 : 0);
+        bundle.putInt("past", (step > 2) ? 1 : 0);
         fragment3.setArguments(bundle);
         if (firstDraw)
             fragmentTransaction.add(R.id.phase3Holder, fragment3);
@@ -112,6 +116,7 @@ public class TimelineActivity extends AppCompatActivity {
         bundle.putString("timeHeader", "Boarding begins at " + boardingTime.toString(timeFormat));
         bundle.putString("gate", gate);
         bundle.putInt("active", (step == 3) ? 1 : 0);
+        bundle.putInt("past", (step > 3) ? 1 : 0);
         fragment4.setArguments(bundle);
         if (firstDraw)
             fragmentTransaction.add(R.id.phase4Holder, fragment4);

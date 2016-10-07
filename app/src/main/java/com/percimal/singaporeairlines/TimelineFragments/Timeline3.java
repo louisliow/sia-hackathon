@@ -30,13 +30,30 @@ public class Timeline3 extends Fragment {
         if (active > 0) {
             view = inflater.inflate(R.layout.timeline3, container, false);
             TextView airportInfo = (TextView) view.findViewById(R.id.timeBody3);
-            airportInfo.setText(getArguments().getString("airport") + "\nTerminal " + getArguments().getString("terminal"));
+            String airport = getArguments().getString("airport");
+            String terminal = getArguments().getString("terminal");
+            airportInfo.setText(airport + ", Terminal " + terminal);
+            String headerText = getArguments().getString("timeHeader");
+            TextView checkinHeader = (TextView) view.findViewById(R.id.timeLeft3);
+            checkinHeader.setText(headerText);
+
+            TextView checkinBody = (TextView) view.findViewById(R.id.timeBody3_2);
+            checkinBody.setText("Your baggage allowance for this trip is 2 pieces of 32kg each.\n\n" +
+                "Liquid products must be in containers of 100ml or less (broadly equivalent to 100 grams or less) " +
+                    "and carried together in a transparent, resealable plastic bag. \n\n" +
+                "The bag's sealed area must add up to no more than 80cm.\n\n" +
+                "Only one bag is allowed for each passenger, with exceptions for " +
+                    "carers who may carry the bags of the people in their care, including children");
         } else {
             view = inflater.inflate(R.layout.timeline3_inactive, container, false);
+            int past = getArguments().getInt("past");
+            String headerText = getArguments().getString("timeHeader");
+            TextView checkinHeader = (TextView) view.findViewById(R.id.timeLeft3);
+            if (past > 0)
+                checkinHeader.setText("You have checked in");
+            else
+                checkinHeader.setText(headerText);
         }
-        String headerText = getArguments().getString("timeHeader");
-        TextView checkinHeader = (TextView) view.findViewById(R.id.timeLeft3);
-        checkinHeader.setText(headerText);
 
         return view;
     }
