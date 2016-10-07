@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="5dp"
                         android:padding="10dp"
-                        android:text="Find shops like Louis Vuitton,  Click here to find out more."
+                        android:text="Find shops like Watsons, Revlon, and Shilla.  Click here to find out more."
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
                     <!--<Button
                         android:layout_alignParentRight="true"
