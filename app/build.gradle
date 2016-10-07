@@ -33,5 +33,7 @@ dependencies {
     compile 'com.uber.sdk:rides-android:0.5.4'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
     compile 'com.google.android.gms:play-services:9.6.1'
+    compile 'com.github.vipulasri:timelineview:1.0.3'
+    compile 'net.danlew:android.joda:2.9.4.2'
     testCompile 'junit:junit:4.12'
 }

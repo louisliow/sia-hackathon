@@ -6,4 +6,9 @@
     <dimen name="app_bar_height">220dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="card_spacing">8dp</dimen>
+    <dimen name="timelineWidth">2dp</dimen>
+    <dimen name="timelineMargin">14dp</dimen>
+    <dimen name="timelineMarkerSize">15dp</dimen>
+    <dimen name="timelineMarkerMargin">7dp</dimen>
+    <dimen name="timelineMarkerMarginTop">10dp</dimen>
 </resources>
