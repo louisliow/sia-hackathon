@@ -1,5 +1,9 @@
 package com.percimal.singaporeairlines;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -93,6 +97,19 @@ public class MainActivity extends AppCompatActivity implements AddFlightDialogFr
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_demo_notification) {
+            // Simulate notification.
+            Notification.Builder mBuilder = new Notification.Builder(this)
+                    .setSmallIcon(R.drawable.ic_stat_flight_depart)
+                    .setStyle(new Notification.BigTextStyle().bigText("SQ 2 to San Francisco"))
+                    .setContentTitle("Flight SQ 2 to San Francisco")
+                    .setContentText("Your flight departs in 3 hours from Singapore Changi Airport, Terminal 3. You should leave soon to arrive on time.")
+                    .setStyle(new Notification.BigTextStyle().bigText("Your flight departs in 3 hours from Singapore Changi Airport, Terminal 3. You should leave soon to arrive on time."))
+                    .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
+            NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            mNotifyMgr.notify(1, mBuilder.build());
             return true;
         }
 
