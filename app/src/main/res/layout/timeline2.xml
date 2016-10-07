@@ -55,9 +55,10 @@
                         android:layout_height="wrap_content"
                         android:background="@color/uber_black"
                         android:textColor="@color/uber_white"
-                        android:text="Request a ride with Uber"
+                        android:text="Uber Services"
                         android:padding="15dp"
-                        android:textSize="15dp"/>
+                        android:textSize="15dp"
+                        android:onClick="startUber"/>
 
                     <Button
                         android:layout_width="0dp"

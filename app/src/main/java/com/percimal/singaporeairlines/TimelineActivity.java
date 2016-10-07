@@ -46,7 +46,7 @@ public class TimelineActivity extends AppCompatActivity {
 
         JodaTimeAndroid.init(this);
         TextView startHeader = (TextView) findViewById(R.id.startText);
-
+        flight = (Flight) getIntent().getSerializableExtra("flight");
         if (flight != null) {
             depatureTime = new DateTime(flight.departure);
             startHeader.setText("Your flight from " + flight.originAirport.toUpperCase() + " to " +
@@ -118,6 +118,12 @@ public class TimelineActivity extends AppCompatActivity {
         else
             fragmentTransaction.replace(R.id.phase4Holder, fragment4);
         fragmentTransaction.commit();
+    }
+
+    public void startUber(View view) {
+        Intent intent = new Intent(getApplicationContext(), UberRequestActivity.class);
+        intent.putExtra("flight", flight);
+        startActivity(intent);
     }
 
     public void startGMaps(View view) {
