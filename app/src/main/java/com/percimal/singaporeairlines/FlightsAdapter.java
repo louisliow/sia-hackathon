@@ -39,7 +39,13 @@ public class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHold
         f.pnr = "5AZ888";
         flightList.add(f);
 
-        flightList.addAll(daoSession.getFlightDao().loadAll());
+        List<Flight> flightsFromDb = daoSession.getFlightDao().queryBuilder()
+                // Hide flights that has departed.
+                .where(FlightDao.Properties.Departure.ge(new Date()))
+                // Order by departure time.
+                .orderAsc(FlightDao.Properties.Departure)
+                .list();
+        flightList.addAll(flightsFromDb);
         notifyDataSetChanged();
     }
 
