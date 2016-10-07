@@ -9,5 +9,5 @@ import retrofit2.http.Query;
 
 public interface AmadeusService {
     @GET("travel-record/{record_locator}?env=TEST")
-    Call<TravelRecord> getTravelRecord(@Path("record_locator") String recordLocator, @Query("last_name") String lastName);
+    Call<TravelRecord> getTravelRecord(@Path("record_locator") String recordLocator, @Query("last_name") String lastName, @Query("apikey") String apikey);
 }

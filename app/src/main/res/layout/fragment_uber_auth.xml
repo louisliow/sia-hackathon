@@ -1,13 +1,38 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:gravity="center"
     tools:context="com.percimal.singaporeairlines.UberAuthFragment">
 
-    <Button
-        android:text="Connect to Uber"
-        android:onClick="uberLogin"
+    <ImageView
+        android:src="@drawable/uber"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="30dp" />
+
+    <TextView
+        android:text="Connect with Uber to enjoy a hassle-free travel experience to and from the airport."
+        android:textSize="25sp"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="sans-serif-light"
+        android:textAlignment="center"
+        android:textColor="@color/colorDarkGrey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-</FrameLayout>
+    <Button
+        android:text="Login with Uber"
+        android:background="@color/colorBlack"
+        android:textColor="@color/colorWhite"
+        android:id="@+id/uber_login_button"
+        android:layout_width="wrap_content"
+        android:padding="15dp"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp"
+        android:layout_marginBottom="30dp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
