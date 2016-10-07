@@ -42,29 +42,68 @@
 
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
+                android:padding="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/title"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="26sp"
-                    android:fontFamily="sans-serif-light"
-                    tools:text="Dubai" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/flight_number"
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="28sp"
+                        android:fontFamily="sans-serif-light"
+                        tools:text="San Francisco" />
+
+                    <TextView
+                        android:id="@+id/flight_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="sans-serif-light"
+                        tools:text="Flight SQ 15" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:fontFamily="sans-serif-light"
-                    tools:text="SQ 494" />
+                    android:orientation="vertical"
+                    android:gravity="end">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/departure_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:fontFamily="sans-serif-light"
+                        tools:text="8 Oct" />
+
+                    <TextView
+                        android:id="@+id/departure_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-light"
+                        tools:text="11:25 AM" />
+
+                    <TextView
+                        android:id="@+id/departure_terminal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-light"
+                        tools:text="Departs Terminal 3" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
         </LinearLayout>
 

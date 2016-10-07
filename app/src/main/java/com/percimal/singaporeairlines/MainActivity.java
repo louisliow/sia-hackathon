@@ -1,6 +1,5 @@
 package com.percimal.singaporeairlines;
 
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -10,22 +9,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -59,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements AddFlightDialogFr
                 .create(AmadeusService.class);
 
         // Set OnClick listener for Foating Action Button.
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +56,17 @@ public class MainActivity extends AppCompatActivity implements AddFlightDialogFr
 
         addFlightDialogFragment = new AddFlightDialogFragment();
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        // Hide FAB on scroll.
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                if (dy > 5)
+                    fab.setVisibility(View.GONE);
+                else if (dy < -5)
+                    fab.setVisibility(View.VISIBLE);
+            }
+        });
 
         flightsAdapter = new FlightsAdapter(this, daoSession);
         int numCols = 1;
