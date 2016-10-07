@@ -8,7 +8,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.uber.sdk.android.core.UberSdk;
@@ -62,7 +61,7 @@ public class UberRequestActivity extends AppCompatActivity implements
         }
 
         porterService = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.100:8080/")
+                .baseUrl("http://api.sia.jon.sg/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(PorterService.class);
@@ -153,13 +152,22 @@ public class UberRequestActivity extends AppCompatActivity implements
             public void onResponse(Call<Ride> call, Response<Ride> response) {
                 if (response.isSuccessful()) {
                     Ride ride = response.body();
-                    // TODO: Query backend to check if ride.getRideId() already requested for porter service.
-                    boolean porterRequested = false;
-                    if (porterRequested) {
-                        porterRequestDialog.initialize(PorterRequestDialogFragment.PorterState.REQUESTED);
-                    } else {
-                        porterRequestDialog.initialize(PorterRequestDialogFragment.PorterState.AVAILABLE);
-                    }
+                    // Query backend to check if ride already requested for porter service.
+                    porterService.getPorterRequest(ride.getRideId()).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                porterRequestDialog.initialize(PorterRequestDialogFragment.PorterState.REQUESTED);
+                            } else {
+                                porterRequestDialog.initialize(PorterRequestDialogFragment.PorterState.AVAILABLE);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            porterRequestDialog.initialize(PorterRequestDialogFragment.PorterState.UNAVAILABLE);
+                        }
+                    });
                 } else {
                     porterRequestDialog.initialize(PorterRequestDialogFragment.PorterState.UNAVAILABLE);
                 }
@@ -179,8 +187,7 @@ public class UberRequestActivity extends AppCompatActivity implements
             public void onResponse(Call<Ride> call, Response<Ride> response) {
                 if (response.isSuccessful()) {
                     Ride ride = response.body();
-                    // TODO: Send request to track `ride.getRideId()`.
-                    porterService.createPortalRequest(new CreatePortalRequestBody(
+                    porterService.createPorterRequest(new CreatePortalRequestBody(
                             accessTokenManager.getAccessToken().getToken(),
                             flight.flightNumber,
                             flight.originAirport,

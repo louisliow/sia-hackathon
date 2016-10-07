@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 public class PorterRequestDialogFragment extends DialogFragment {
 
@@ -66,8 +67,7 @@ public class PorterRequestDialogFragment extends DialogFragment {
                 view.findViewById(R.id.unavailable_view).setVisibility(View.VISIBLE);
                 break;
             case REQUESTED:
-                // TODO: Create view for this case.
-                // view.findViewById(R.id.request_view).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.requested_view).setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -76,11 +76,10 @@ public class PorterRequestDialogFragment extends DialogFragment {
         view.findViewById(R.id.loading_indicator).setVisibility(View.GONE);
         if (success) {
             // Successfully requested.
-            // TODO: Switch to view for requested case.
-            // view.findViewById(R.id.request_view).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.requested_view).setVisibility(View.VISIBLE);
         } else {
             // Failed to request.
-            // TODO: Show error message.
+            Toast.makeText(getActivity(), "Porter service is not available for this airport.", Toast.LENGTH_SHORT).show();
             view.findViewById(R.id.available_view).setVisibility(View.VISIBLE);
         }
     }

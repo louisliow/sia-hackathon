@@ -9,10 +9,10 @@ import retrofit2.http.Query;
 
 public interface PorterService {
     @POST("porter/request")
-    Call<Void> createPortalRequest(@Body CreatePortalRequestBody body);
+    Call<Void> createPorterRequest(@Body CreatePortalRequestBody body);
 
-    @GET("porter/request/:rideId")
-    Call<Void> getPortalRequest(@Path("rideId") String rideId);
+    @GET("porter/request/{rideId}")
+    Call<Void> getPorterRequest(@Path("rideId") String rideId);
 }
 
 class CreatePortalRequestBody {
