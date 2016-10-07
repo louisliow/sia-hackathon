@@ -17,5 +17,5 @@
         android:layout_centerVertical="false"
         android:layout_marginLeft="@dimen/timelineMarkerMargin"
         android:layout_marginTop="@dimen/timelineMarkerMarginTop"
-        android:background="@drawable/blackdot" />
+        android:background="@drawable/whitedot" />
 </RelativeLayout>

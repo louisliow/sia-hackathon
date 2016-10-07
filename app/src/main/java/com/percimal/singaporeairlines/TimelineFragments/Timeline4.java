@@ -30,7 +30,11 @@ public class Timeline4 extends Fragment {
         if (active > 0) {
             view = inflater.inflate(R.layout.timeline4, container, false);
             TextView gateText = (TextView) view.findViewById(R.id.timeBody4);
-            gateText.setText("Gate " + getArguments().getString("gate"));
+            String gateNumber = getArguments().getString("gate");
+            if (gateNumber != null)
+                gateText.setText("Gate " + gateNumber);
+            else
+                gateText.setText("Gate information not yet available.");
         } else {
             view = inflater.inflate(R.layout.timeline4_inactive, container, false);
         }

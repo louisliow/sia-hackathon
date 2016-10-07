@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <include layout="@layout/timelinenode" />
+        <include layout="@layout/timelinenode_inactive" />
     </RelativeLayout>
 
     <LinearLayout
@@ -25,7 +25,9 @@
             android:layout_marginLeft="0dp"
             android:padding="5dp"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:onClick="timeClick2"
+            android:clickable="true"/>
     </LinearLayout>
 
 

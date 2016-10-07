@@ -35,6 +35,9 @@ public class TimelineActivity extends AppCompatActivity {
     private DateTime depatureTime, boardingTime, checkinTime, reachTime, leaveTime;
 
     private Flight flight;
+    private int step;
+    private String airport, terminal, gate;
+    private DateTimeFormatter timeFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,6 @@ public class TimelineActivity extends AppCompatActivity {
 
         JodaTimeAndroid.init(this);
         TextView startHeader = (TextView) findViewById(R.id.startText);
-        String airport, terminal, gate;
 
         if (flight != null) {
             depatureTime = new DateTime(flight.departure);
@@ -64,10 +66,16 @@ public class TimelineActivity extends AppCompatActivity {
         checkinTime = boardingTime.minusMinutes(minsForCheckin);
         reachTime = checkinTime.minusMinutes(minsForReaching);
         now = new DateTime();
-        DateTimeFormatter timeFormat = new DateTimeFormatterBuilder().appendPattern("H:mm").toFormatter();
+        timeFormat = new DateTimeFormatterBuilder().appendPattern("H:mm").toFormatter();
         TextView takeOffText = (TextView) findViewById(R.id.takeoffText);
         takeOffText.setText("Flight departs at " + depatureTime.toString(timeFormat));
 
+        // Calculate current phase here:
+        step = 1;
+        drawFragments(true);
+    }
+
+    private void drawFragments(boolean firstDraw) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction;
         Bundle bundle;
@@ -76,9 +84,12 @@ public class TimelineActivity extends AppCompatActivity {
         Fragment fragment2 = new Timeline2();
         bundle = new Bundle();
         bundle.putString("timeHeader", "Reach airport by " + reachTime.toString(timeFormat));
-        bundle.putInt("active", 0);
+        bundle.putInt("active", (step == 1) ? 1 : 0);
         fragment2.setArguments(bundle);
-        fragmentTransaction.add(R.id.phase2Holder, fragment2);
+        if (firstDraw)
+            fragmentTransaction.add(R.id.phase2Holder, fragment2);
+        else
+            fragmentTransaction.replace(R.id.phase2Holder, fragment2);
         fragmentTransaction.commit();
 
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -87,9 +98,12 @@ public class TimelineActivity extends AppCompatActivity {
         bundle.putString("timeHeader", "Check in by " + checkinTime.toString(timeFormat));
         bundle.putString("airport", airport);
         bundle.putString("terminal", terminal);
-        bundle.putInt("active", 0);
+        bundle.putInt("active", (step == 2) ? 1 : 0);
         fragment3.setArguments(bundle);
-        fragmentTransaction.add(R.id.phase3Holder, fragment3);
+        if (firstDraw)
+            fragmentTransaction.add(R.id.phase3Holder, fragment3);
+        else
+            fragmentTransaction.replace(R.id.phase3Holder, fragment3);
         fragmentTransaction.commit();
 
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -97,9 +111,12 @@ public class TimelineActivity extends AppCompatActivity {
         bundle = new Bundle();
         bundle.putString("timeHeader", "Boarding begins at " + boardingTime.toString(timeFormat));
         bundle.putString("gate", gate);
-        bundle.putInt("active", 1);
+        bundle.putInt("active", (step == 3) ? 1 : 0);
         fragment4.setArguments(bundle);
-        fragmentTransaction.add(R.id.phase4Holder, fragment4);
+        if (firstDraw)
+            fragmentTransaction.add(R.id.phase4Holder, fragment4);
+        else
+            fragmentTransaction.replace(R.id.phase4Holder, fragment4);
         fragmentTransaction.commit();
     }
 
@@ -108,5 +125,18 @@ public class TimelineActivity extends AppCompatActivity {
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
+    }
+
+    public void timeClick2(View view) {
+        step = 1;
+        drawFragments(false);
+    }
+    public void timeClick3(View view) {
+        step = 2;
+        drawFragments(false);
+    }
+    public void timeClick4(View view) {
+        step = 3;
+        drawFragments(false);
     }
 }
