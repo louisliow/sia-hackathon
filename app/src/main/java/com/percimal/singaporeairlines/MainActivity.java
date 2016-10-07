@@ -1,6 +1,7 @@
 package com.percimal.singaporeairlines;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,19 +10,33 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+
+public class MainActivity extends AppCompatActivity implements AddFlightDialogFragment.OnFragmentInteractionListener {
 
     private RecyclerView recyclerView;
     private FlightsAdapter flightsAdapter;
-    private List<Flight> flightList;
+    private AddFlightDialogFragment addFlightDialogFragment;
+    private DaoSession daoSession;
+    private AmadeusService amadeusService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,92 +45,32 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Initialize GreenDao.
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "db.sqlite", null);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+
+        // Initialize Amadeus service.
+        amadeusService = new Retrofit.Builder()
+                .baseUrl("https://api.sandbox.amadeus.com/v1.2/")
+                .addConverterFactory(new AmadeusConverterFactory())
+                .build()
+                .create(AmadeusService.class);
+
+        // Set OnClick listener for Foating Action Button.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddFlightsActivity.class);
-                startActivity(intent);
+                addFlightDialogFragment.show(getFragmentManager(), "addFlight");
             }
         });
 
+        addFlightDialogFragment = new AddFlightDialogFragment();
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        // TODO: Replace mock data with data from SQLite.
-        flightList = new ArrayList<>();
-        Flight f1 = new Flight();
-        f1.originAirport = "SIN";
-        f1.destinationAirport = "ICN";
-        f1.marketingAirline = "SQ";
-        f1.flightNumber = "16";
-        f1.originTerminal = "3";
-        f1.travelClass = "ECONOMY";
-        flightList.add(f1);
-        Flight f2 = new Flight();
-        f2.originAirport = "ICN";
-        f2.destinationAirport = "SFO";
-        f2.marketingAirline = "SQ";
-        f2.flightNumber = "15";
-        f2.flightNumber = "16";
-        f2.originTerminal = "3";
-        f2.travelClass = "ECONOMY";
-        flightList.add(f2);
-        Flight f3 = new Flight();
-        f3.originAirport = "SFO";
-        f3.destinationAirport = "SIN";
-        f3.marketingAirline = "SQ";
-        f3.flightNumber = "14";
-        f3.flightNumber = "16";
-        f3.originTerminal = "3";
-        f3.travelClass = "ECONOMY";
-        flightList.add(f3);
-        Flight f4 = new Flight();
-        f4.originAirport = "SIN";
-        f4.destinationAirport = "HKG";
-        f4.marketingAirline = "SQ";
-        f4.flightNumber = "8";
-        f4.flightNumber = "16";
-        f4.originTerminal = "3";
-        f4.travelClass = "ECONOMY";
-        flightList.add(f4);
-        Flight f5 = new Flight();
-        f5.originAirport = "HKG";
-        f5.destinationAirport = "SIN";
-        f5.marketingAirline = "SQ";
-        f5.flightNumber = "2";
-        f5.flightNumber = "16";
-        f5.originTerminal = "3";
-        f5.travelClass = "ECONOMY";
-        flightList.add(f5);
-        Flight f6 = new Flight();
-        f6.originAirport = "SIN";
-        f6.destinationAirport = "JFK";
-        f6.marketingAirline = "SQ";
-        f6.flightNumber = "1";
-        f6.flightNumber = "16";
-        f6.originTerminal = "3";
-        f6.travelClass = "ECONOMY";
-        flightList.add(f6);
-        Flight f7 = new Flight();
-        f7.originAirport = "JFK";
-        f7.destinationAirport = "SIN";
-        f7.marketingAirline = "SQ";
-        f7.flightNumber = "27";
-        f7.flightNumber = "16";
-        f7.originTerminal = "3";
-        f7.travelClass = "ECONOMY";
-        flightList.add(f7);
-        Flight f8 = new Flight();
-        f8.originAirport = "SIN";
-        f8.destinationAirport = "LHR";
-        f8.marketingAirline = "SQ";
-        f8.flightNumber = "28";
-        f8.flightNumber = "16";
-        f8.originTerminal = "3";
-        f8.travelClass = "ECONOMY";
-        flightList.add(f8);
-
-        flightsAdapter = new FlightsAdapter(this, flightList);
+        flightsAdapter = new FlightsAdapter(this, daoSession);
         int numCols = 1;
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, numCols);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -144,6 +99,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void addFlight(String pnr, String lastName) {
+        amadeusService.getTravelRecord(pnr, lastName, getString(R.string.amadeus_api_key)).enqueue(new Callback<TravelRecord>() {
+            @Override
+            public void onResponse(Call<TravelRecord> call, retrofit2.Response<TravelRecord> response) {
+                if (response.isSuccessful()) {
+                    TravelRecord travelRecord = response.body();
+                    for (Flight flight : travelRecord.flights) {
+                        // TODO: Check if flight already exists before adding.
+                        daoSession.getFlightDao().insert(flight);
+                    }
+                    addFlightDialogFragment.addFlightCallback(true);
+                    flightsAdapter.updateFlightList();
+                } else {
+                    addFlightDialogFragment.addFlightCallback(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TravelRecord> call, Throwable t) {
+                addFlightDialogFragment.addFlightCallback(false);
+            }
+        });
     }
 
     private class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

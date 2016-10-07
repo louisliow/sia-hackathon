@@ -1,13 +1,16 @@
 package com.percimal.singaporeairlines;
 
 import java.util.HashMap;
+import java.util.Map;
 
-public final class AppData {
-    private static AppData mInstance = null;
+public final class Constants {
 
-    HashMap<String, String> iataCodeToCity;
+    // Prevent instantiation of class.
+    private Constants() {}
 
-    protected AppData() {
+    // Populate IATA airport code HashMap.
+    public static final Map<String, String> iataCodeToCity;
+    static {
         iataCodeToCity = new HashMap<>();
         iataCodeToCity.put("ADL", "Adelaide");
         iataCodeToCity.put("AKL", "Auckland");
@@ -71,13 +74,6 @@ public final class AppData {
         iataCodeToCity.put("TPE", "Taipei");
         iataCodeToCity.put("WLG", "Wellington");
         iataCodeToCity.put("ZRH", "Zurich");
-    }
-
-    public static synchronized AppData getInstance() {
-        if (null == mInstance) {
-            mInstance = new AppData();
-        }
-        return mInstance;
     }
 
 }

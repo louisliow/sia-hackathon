@@ -9,16 +9,44 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHolder> {
 
     private Context mContext;
+    private DaoSession daoSession;
     private List<Flight> flightList;
 
-    public FlightsAdapter(Context mContext, List<Flight> flightList) {
+    public void updateFlightList() {
+        flightList = new ArrayList<>();
+
+        // Add mock flight.
+        Flight f = new Flight();
+        f.departure = new Date(1475897100000L);
+        f.arrival = new Date(1475942100000L);;
+        f.originAirport = "SIN";
+        f.originTerminal = "3";
+        f.destinationAirport = "SFO";
+        f.destinationTerminal = "G";
+        f.flightNumber = "2";
+        f.marketingAirline = "SQ";
+        f.operatingAirline = "SQ";
+        f.bookingCode = "J";
+        f.travelClass = "BUSINESS";
+        f.bookingStatus = "CONFIRMED";
+        f.pnr = "5AZ888";
+        flightList.add(f);
+
+        flightList.addAll(daoSession.getFlightDao().loadAll());
+        notifyDataSetChanged();
+    }
+
+    public FlightsAdapter(Context mContext, DaoSession daoSession) {
         this.mContext = mContext;
-        this.flightList = flightList;
+        this.daoSession = daoSession;
+        updateFlightList();
     }
 
     @Override
@@ -31,7 +59,7 @@ public class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Flight flight = flightList.get(position);
         holder.cardImage.setImageResource(mContext.getResources().getIdentifier(flight.destinationAirport.toLowerCase(), "drawable", mContext.getPackageName()));
-        holder.title.setText(AppData.getInstance().iataCodeToCity.get(flight.destinationAirport));
+        holder.title.setText(Constants.iataCodeToCity.get(flight.destinationAirport));
         holder.flightRoute.setText(flight.originAirport + " - " + flight.destinationAirport);
         holder.flightNumber.setText(flight.marketingAirline + " " + flight.flightNumber);
         holder.itemView.setOnClickListener(new View.OnClickListener() {

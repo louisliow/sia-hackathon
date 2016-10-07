@@ -23,7 +23,7 @@
         <TextView
             android:text="Experience the warmest welcome with Singapore Airline's premium portal service. Our team of staff will meet you when your Uber arrives to assist with your baggage."
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:visibility="gone"

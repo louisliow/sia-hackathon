@@ -24,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddFlightsActivity" />
         <activity
             android:name=".FlightDetailActivity"
             android:label="@string/title_activity_flight_detail"
