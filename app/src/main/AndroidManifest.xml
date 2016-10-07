@@ -13,7 +13,8 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA0y_843Dkq-5X8VO7pA4WhtpZaAP_zCeo"/>
+            android:value="AIzaSyA0y_843Dkq-5X8VO7pA4WhtpZaAP_zCeo" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -32,6 +33,10 @@
             android:name=".UberRequestActivity"
             android:label="@string/title_activity_uber_request"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".TimelineActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
+        </activity>
     </application>
 
 </manifest>
