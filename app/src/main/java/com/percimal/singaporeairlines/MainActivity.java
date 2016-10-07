@@ -1,5 +1,8 @@
 package com.percimal.singaporeairlines;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
@@ -10,22 +13,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -59,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements AddFlightDialogFr
                 .create(AmadeusService.class);
 
         // Set OnClick listener for Foating Action Button.
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +60,17 @@ public class MainActivity extends AppCompatActivity implements AddFlightDialogFr
 
         addFlightDialogFragment = new AddFlightDialogFragment();
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        // Hide FAB on scroll.
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                if (dy > 5)
+                    fab.setVisibility(View.GONE);
+                else if (dy < -5)
+                    fab.setVisibility(View.VISIBLE);
+            }
+        });
 
         flightsAdapter = new FlightsAdapter(this, daoSession);
         int numCols = 1;
@@ -95,6 +97,19 @@ public class MainActivity extends AppCompatActivity implements AddFlightDialogFr
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_demo_notification) {
+            // Simulate notification.
+            Notification.Builder mBuilder = new Notification.Builder(this)
+                    .setSmallIcon(R.drawable.ic_stat_flight_depart)
+                    .setStyle(new Notification.BigTextStyle().bigText("SQ 2 to San Francisco"))
+                    .setContentTitle("Flight SQ 2 to San Francisco")
+                    .setContentText("Your flight departs in 3 hours from Singapore Changi Airport, Terminal 3. You should leave soon to arrive on time.")
+                    .setStyle(new Notification.BigTextStyle().bigText("Your flight departs in 3 hours from Singapore Changi Airport, Terminal 3. You should leave soon to arrive on time."))
+                    .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
+            NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            mNotifyMgr.notify(1, mBuilder.build());
             return true;
         }
 

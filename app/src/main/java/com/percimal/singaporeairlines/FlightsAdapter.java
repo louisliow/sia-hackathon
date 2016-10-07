@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,9 @@ public class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHold
     private Context mContext;
     private DaoSession daoSession;
     private List<Flight> flightList;
+
+    private final DateFormat dateFormat = new SimpleDateFormat("d MMM");
+    private final DateFormat timeFormat = new SimpleDateFormat("hh:mm a");
 
     public void updateFlightList() {
         flightList = new ArrayList<>();
@@ -67,7 +72,10 @@ public class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHold
         holder.cardImage.setImageResource(mContext.getResources().getIdentifier(flight.destinationAirport.toLowerCase(), "drawable", mContext.getPackageName()));
         holder.title.setText(Constants.iataCodeToCity.get(flight.destinationAirport));
         holder.flightRoute.setText(flight.originAirport + " - " + flight.destinationAirport);
-        holder.flightNumber.setText(flight.marketingAirline + " " + flight.flightNumber);
+        holder.flightNumber.setText("Flight " + flight.marketingAirline + " " + flight.flightNumber);
+        holder.departureDate.setText(dateFormat.format(flight.departure));
+        holder.departureTime.setText(timeFormat.format(flight.departure));
+        holder.departureTerminal.setText("Terminal " + flight.originTerminal);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +95,9 @@ public class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHold
         public TextView title;
         public TextView flightRoute;
         public TextView flightNumber;
+        public TextView departureDate;
+        public TextView departureTime;
+        public TextView departureTerminal;
         public ImageView cardImage;
 
         public ViewHolder(View view) {
@@ -94,6 +105,9 @@ public class FlightsAdapter extends RecyclerView.Adapter<FlightsAdapter.ViewHold
             title = (TextView) view.findViewById(R.id.title);
             flightRoute = (TextView) view.findViewById(R.id.flight_route);
             flightNumber = (TextView) view.findViewById(R.id.flight_number);
+            departureDate = (TextView) view.findViewById(R.id.departure_date);
+            departureTime = (TextView) view.findViewById(R.id.departure_time);
+            departureTerminal = (TextView) view.findViewById(R.id.departure_terminal);
             cardImage = (ImageView) view.findViewById(R.id.card_image);
         }
     }
