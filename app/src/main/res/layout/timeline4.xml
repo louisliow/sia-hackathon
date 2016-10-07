@@ -45,10 +45,11 @@
                     android:paddingBottom="0dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Please proceed to:"/>
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dp">
+                    android:padding="5dp"
+                    android:orientation="vertical">
                     <TextView
                         android:id="@+id/timeBody4"
                         android:layout_width="wrap_content"
@@ -57,12 +58,21 @@
                         android:padding="10dp"
                         android:text="Gate E2"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                        android:id="@+id/timeBody4_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:padding="10dp"
+                        android:text="Find shops like Louis Vuitton,  Click here to find out more."
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
                     <!--<Button
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Directions"/>-->
-                </RelativeLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
